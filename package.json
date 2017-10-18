@@ -29,14 +29,14 @@
   },
   "homepage": "https://github.com/eheikes/aws-tts#readme",
   "devDependencies": {
-    "jasmine": "^2.6.0",
+    "jasmine": "^2.8.0",
     "nyc": "^11.2.1",
     "proxyquire": "^1.8.0",
-    "ux-lint": "^1.7.1"
+    "ux-lint": "^1.8.0"
   },
   "dependencies": {
     "async": "^2.1.4",
-    "aws-sdk": "^2.7.27",
+    "aws-sdk": "^2.135.0",
     "fs-extra": "^2.0.0",
     "got": "^6.7.1",
     "minimist": "^1.2.0",

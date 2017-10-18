@@ -1,6 +1,7 @@
 'use strict';
 
 const async = require('async');
+const https = require('https');
 const fs = require('fs-extra');
 const got = require('got');
 const ora = require('ora');
@@ -180,6 +181,9 @@ let createManifest = parts => {
 let createPolly = opts => {
   return new Polly({
     apiVersion: '2016-06-10',
+    httpOptions: https.Agent({
+      rejectUnauthorized: false,
+    }),
     region: opts.region,
     accessKeyId: opts['access-key'],
     secretAccessKey: opts['secret-key'],
