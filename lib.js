@@ -9,15 +9,6 @@ const Polly = require('aws-sdk/clients/polly').Presigner;
 const spawn = require('child_process').spawn;
 const tempfile = require('tempfile');
 const textchunk = require('textchunk');
-const aws = require('aws-sdk');
-aws.config.update({
-  httpOptions: {
-    agent: new (require('https').Agent)({
-      rejectUnauthorized: false
-    })
-  }
-});
-
 
 const fileExtensions = {
   mp3: 'mp3',
@@ -98,7 +89,10 @@ let callAws = (info, i, callback) => {
   let error;
   let outputStream = fs.createWriteStream(info.tempfile);
   outputStream.on('close', () => { callback(error); });
-  got.stream(url).on('error', err => { error = err; }).pipe(outputStream);
+  console.log('PollyURL: ', url);
+  got.stream(url, {
+    rejectUnauthorized: false
+  }).on('error', err => { error = err; }).pipe(outputStream);
 };
 
 // Deletes the manifest and its files.
@@ -245,6 +239,9 @@ exports.generateSpeech = (strParts, opts) => {
     .then(createManifest)
     .then(manifest => {
       return combine(manifest, opts);
+    })
+    .catch(err => {
+      console.error(err);
     });
 };
 
