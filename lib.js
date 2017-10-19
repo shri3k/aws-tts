@@ -1,7 +1,6 @@
 'use strict';
 
 const async = require('async');
-const https = require('https');
 const fs = require('fs-extra');
 const got = require('got');
 const ora = require('ora');
@@ -10,6 +9,15 @@ const Polly = require('aws-sdk/clients/polly').Presigner;
 const spawn = require('child_process').spawn;
 const tempfile = require('tempfile');
 const textchunk = require('textchunk');
+const aws = require('aws-sdk');
+aws.config.update({
+  httpOptions: {
+    agent: new (require('https').Agent)({
+      rejectUnauthorized: false
+    })
+  }
+});
+
 
 const fileExtensions = {
   mp3: 'mp3',
@@ -181,9 +189,6 @@ let createManifest = parts => {
 let createPolly = opts => {
   return new Polly({
     apiVersion: '2016-06-10',
-    httpOptions: https.Agent({
-      rejectUnauthorized: false,
-    }),
     region: opts.region,
     accessKeyId: opts['access-key'],
     secretAccessKey: opts['secret-key'],
